@@ -1,30 +1,35 @@
-def data(): # получаем из файла
-  with open('data_file.txt', 'r', encoding='utf-8') as data_file:
-    data = data_file.read().split('\n')
+phone_book: list[dict[str, str]] = []
+path = 'D:/Kate/EDU/GeekBrains/lessons/practice/python_course/seminars/sem9/hw9/phone.txt'
 
-  return data
+def open_pb():
+		global phone_book, path
+		with open(path, 'r', encoding='UTF-8') as file:
+				data = file.readlines()
+		for contact in data: 
+				contact = contact.strip().split(':') 
+				phone_book.append({'name':contact[0], 'phone':contact[1], 'comment':contact[2]})
 
-def add_contact(contact): # добавляем контакт
-  with open('data_file.txt', 'a', encoding='utf-8') as data_file:
-    data_file.write(f'{contact}\n')
+def save_pb():
+		global phone_book, path
+		data = []
+		for contact in phone_book:
+				contact = ':'.join([value for value in contact.values()])
+				data.append(contact)
+		with open(path, 'w', encoding='UTF-8') as file:
+				file.write('\n'.join(data))
 
-  return contact
+def get_pb() -> list[dict[str, str]]:
+		global phone_book
+		return phone_book
 
-def find_contact(data): # поиск данных
-  command = input('Меню: \n1. Искать по ФИО \n2. Искать по номеру телефона') # view.py
-  match command:
-    case 1:
-      find_name = input('Введите ФИО: ')
-      for values in data:
-        if data[values] == find_name:
-          print(data[values])
+def add_contact(contact: dict[str, str]):
+		global phone_book
+		phone_book.append(contact)
+		return contact.get('name')
 
-    case 2:
-      find_phone = input('Введите номер телефона: ')
-      for values in data:
-        if data[values] == find_phone:
-          print(data[values])
+def del_contact(index: int): 
+		return phone_book.pop(index-1).get('name') 
 
-data()
-add_contact('+4654456')
-find_contact('+4654456')
+# def change_pb(index: int, name: str, phone: str):
+    
+    
